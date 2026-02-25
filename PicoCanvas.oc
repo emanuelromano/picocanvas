@@ -1,0 +1,7 @@
+// PicoCanvas - Pixel art!
+// started 23/02/2026
+
+handler PicoCanvas.onstart() {
+	// load the main form
+	mainForm.load();
+}

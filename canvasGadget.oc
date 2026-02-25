@@ -1,0 +1,251 @@
+// Canvas gadget
+
+struct CanvasGadget {
+	// A UIGadget must always be the first member of a gadget
+	UIGadget gadget;
+
+	// Default event handlers
+	void onopen();
+	void ondraw();
+	void onpendown();
+	void onpenmove();
+	void onpenup();
+
+	// Internal methods
+	void SetParameters(bool soundFlag, int canvas);
+	void SetPixelColorIndex(int colorIndex);
+	void SetCanvasSize(int size);
+	void DrawCanvasGrid();
+	void DrawPixel(int penX, int penY);
+	void DrawLineCells(int col0, int row0, int col1, int row1);
+	
+	// Internal variables
+	Draw	draw;
+	Event	e;
+	bool	soundEnabled;
+	int		canvasSize;	
+	int		gridSize; // 16 - 32
+	int		cellSize; // 8 - 4
+	int		pixelSize; // 7 - 3
+	int		pixelColorIndex;
+	int		lastRow;
+	int		lastCol;
+	bool	penIsDown;
+};
+
+
+// Gadget variables
+// Tone parameters
+int toneHz = 10000,
+	toneMs = 10,
+	toneVol = 5,
+	sleepMs = 30;
+
+
+void CanvasGadget.SetParameters(bool soundFlag, int canvas) {
+	soundEnabled = soundFlag;
+	canvasSize = canvas;
+}
+
+void CanvasGadget.SetPixelColorIndex(int colorIndex) {
+	pixelColorIndex = colorIndex;
+}
+
+
+void CanvasGadget.SetCanvasSize(int size) {
+	gridSize  = size;
+	cellSize  = (gadget.w - 1) / gridSize;
+	pixelSize = cellSize - 1;
+}
+
+
+void CanvasGadget.DrawCanvasGrid() {
+	int i, coord;
+	
+	draw.begin();
+	draw.fgRGB(255, 255, 255);
+	draw.rect(clrFG, 1, 1, gadget.w-1, gadget.h-1, 0);
+	
+	draw.fgRGB(221, 221, 221);
+
+	// Marco
+	draw.line(clrFG, 0, 0, gadget.w, 0);
+	if (soundEnabled) tonea(toneHz, toneMs, toneVol);
+	sleep(sleepMs);
+	draw.line(clrFG, gadget.w-1, 0, gadget.w-1, gadget.h);
+	if (soundEnabled) tonea(toneHz, toneMs, toneVol);
+	sleep(sleepMs);
+	draw.line(clrFG, 0, gadget.h-1, gadget.w, gadget.h-1);
+	if (soundEnabled) tonea(toneHz, toneMs, toneVol);
+	sleep(sleepMs);
+	draw.line(clrFG, 0, 0, 0, gadget.h);
+	if (soundEnabled) tonea(toneHz, toneMs, toneVol);
+	sleep(sleepMs);
+
+	coord = 0;
+	for (i = 1; i < gridSize; i++) {
+		coord += cellSize;
+
+		// Horizontal
+		draw.line(clrFG, 0, coord, gadget.w, coord);
+		if (soundEnabled) tonea(toneHz, toneMs, toneVol);
+		sleep(sleepMs);
+		
+		// Vertical
+		draw.line(clrFG, coord, 0, coord, gadget.h);
+		if (soundEnabled) tonea(toneHz, toneMs, toneVol);
+		sleep(sleepMs);
+	}
+
+	draw.end();
+}
+
+
+void CanvasGadget.DrawPixel(int penX, int penY) {
+	int col, row;
+	int px1, py1;
+
+	// Fuera del área
+	if (penX < 1 || penY < 1) return;
+	if (penX >= gadget.w-1 || penY >= gadget.h-1) return;
+
+	// Ignorar líneas
+	//if (((penX - 1) % cellSize) == 0) return;
+	//if (((penY - 1) % cellSize) == 0) return;
+
+	col = (penX - 1) / cellSize;
+	row = (penY - 1) / cellSize;
+
+	if (col < 0 || col >= gridSize) return;
+	if (row < 0 || row >= gridSize) return;
+
+	px1 = col * cellSize + 1;
+	py1 = row * cellSize + 1;
+	
+	draw.fg(pixelColorIndex);
+
+	draw.rect(
+		clrFG,
+		px1, py1,
+		px1 + pixelSize,
+		py1 + pixelSize,
+		0
+	);
+}
+
+
+void CanvasGadget.DrawLineCells(int col0, int row0, int col1, int row1) {
+	int dx, dy;
+	int sx, sy;
+	int err, e2;
+	int px1, py1;
+
+	dx = col1 - col0;
+	if (dx < 0) dx = -dx;
+
+	dy = row1 - row0;
+	if (dy < 0) dy = -dy;
+
+	if (col0 < col1)
+		sx = 1;
+	else
+		sx = -1;
+
+	if (row0 < row1)
+		sy = 1;
+	else
+		sy = -1;
+
+	err = dx - dy;
+
+	while (true) {
+		px1 = col0 * cellSize + 1;
+		py1 = row0 * cellSize + 1;
+
+		draw.rect(
+			clrFG,
+			px1, py1,
+			px1 + pixelSize,
+			py1 + pixelSize,
+			0
+		);
+
+		if (col0 == col1 && row0 == row1)
+			break;
+
+		e2 = err + err;
+
+		if (e2 > -dy) {
+			err -= dy;
+			col0 += sx;
+		}
+
+		if (e2 < dx) {
+			err += dx;
+			row0 += sy;
+		}
+	}
+}
+
+
+void CanvasGadget.onopen() {
+	draw.attachGadget(gadget);
+
+	SetCanvasSize(canvasSize); // 16 - 32
+}
+
+
+void CanvasGadget.ondraw() {
+	DrawCanvasGrid();
+}
+
+
+void CanvasGadget.onpendown() {
+	int penX = e.x;
+	int penY = e.y;
+
+	penIsDown = true;
+
+	draw.begin();
+	DrawPixel(penX, penY);
+
+	// save last pixel
+	lastCol = (penX - 1) / cellSize;
+	lastRow = (penY - 1) / cellSize;
+
+	draw.end();
+
+	if (soundEnabled) tonea(toneHz, toneMs, toneVol);
+}
+
+
+void CanvasGadget.onpenmove() {
+	int penX = e.x;
+	int penY = e.y;
+	int col, row;
+
+	if (!penIsDown) return;
+
+	col = (penX - 1) / cellSize;
+	row = (penY - 1) / cellSize;
+
+	if (col < 0 || col >= gridSize) return;
+	if (row < 0 || row >= gridSize) return;
+
+	if (col == lastCol && row == lastRow) return;
+
+	draw.begin();
+	draw.fg(pixelColorIndex);
+
+	DrawLineCells(lastCol, lastRow, col, row);
+
+	draw.end();
+
+	lastCol = col;
+	lastRow = row;
+}
+
+
+void CanvasGadget.onpenup() {
+	penIsDown = false;
+}
