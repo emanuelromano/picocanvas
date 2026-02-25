@@ -4,7 +4,6 @@
 ## About
 
 I love pixel art, so I thought: why not make a **pixel art app for Palm OS** as a small side project?  
-TimeBoard 2.0 can wait for a while…
 
 Because of the inherently pixelated nature of **160×160 displays** on most Palm OS devices, building this kind of drawing app felt like a natural and fun idea.
 
@@ -50,8 +49,8 @@ This is still in heavy development and has plenty of rough edges — this was li
 
 ## Platform
 
-- **Target OS:** Palm OS
-- **Devices:** Designed with classic 160×160 Palm devices in mind
+- **Target OS:** Palm OS 3.0 and newer
+- **Devices:** Designed with classic 160×160 Palm devices in mind but totally usable on 320x320 devices
 - **Language / Tools:** OrbForms / OrbC
 
 ---
@@ -62,8 +61,7 @@ PicoCanvas is not meant to compete with modern drawing tools.
 It’s about:
 
 - Embracing **hardware limitations**
-- Celebrating **pixel art**
-- Reviving the charm of **classic mobile devices**
+- Reviving the charm of **classic Palm devices** through **pixel art**
 - Making something fun, tiny, and expressive
 
 ---
