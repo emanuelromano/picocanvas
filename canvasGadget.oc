@@ -39,7 +39,7 @@ struct CanvasGadget {
 int toneHz = 10000,
 	toneMs = 10,
 	toneVol = 5,
-	sleepMs = 30;
+	sleepMs = 20;
 
 
 void CanvasGadget.SetParameters(bool soundFlag, int canvas) {
@@ -63,12 +63,15 @@ void CanvasGadget.DrawCanvasGrid() {
 	int i, coord;
 	
 	draw.begin();
+	
+	// White background
 	draw.fgRGB(255, 255, 255);
 	draw.rect(clrFG, 1, 1, gadget.w-1, gadget.h-1, 0);
 	
+	// Grid color
 	draw.fgRGB(221, 221, 221);
 
-	// Marco
+	// Frame
 	draw.line(clrFG, 0, 0, gadget.w, 0);
 	if (soundEnabled) tonea(toneHz, toneMs, toneVol);
 	sleep(sleepMs);
@@ -81,7 +84,8 @@ void CanvasGadget.DrawCanvasGrid() {
 	draw.line(clrFG, 0, 0, 0, gadget.h);
 	if (soundEnabled) tonea(toneHz, toneMs, toneVol);
 	sleep(sleepMs);
-
+	
+	// Grid
 	coord = 0;
 	for (i = 1; i < gridSize; i++) {
 		coord += cellSize;
@@ -105,11 +109,11 @@ void CanvasGadget.DrawPixel(int penX, int penY) {
 	int col, row;
 	int px1, py1;
 
-	// Fuera del área
+	// Out of area
 	if (penX < 1 || penY < 1) return;
 	if (penX >= gadget.w-1 || penY >= gadget.h-1) return;
 
-	// Ignorar líneas
+	// Ignore grid lines
 	//if (((penX - 1) % cellSize) == 0) return;
 	//if (((penY - 1) % cellSize) == 0) return;
 
@@ -122,6 +126,7 @@ void CanvasGadget.DrawPixel(int penX, int penY) {
 	px1 = col * cellSize + 1;
 	py1 = row * cellSize + 1;
 	
+	// Set pixel color
 	draw.fg(pixelColorIndex);
 
 	draw.rect(
@@ -209,7 +214,7 @@ void CanvasGadget.onpendown() {
 	draw.begin();
 	DrawPixel(penX, penY);
 
-	// save last pixel
+	// Save last pixel
 	lastCol = (penX - 1) / cellSize;
 	lastRow = (penY - 1) / cellSize;
 

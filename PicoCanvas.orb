@@ -10,7 +10,8 @@
 @project {
   "<PROJECT><FILE>PicoCanvas.oc</FILE><STANDALONE>1</STANDALONE><LA"
   "NGUAGEFILE></LANGUAGEFILE><DEBUG>0</DEBUG><FORMS><FORM><NAME>mai"
-  "nForm</NAME><FILE>mainform.oc</FILE></FORM></FORMS></PROJECT>"
+  "nForm</NAME><FILE>mainform.oc</FILE></FORM><FORM><NAME>canvasFor"
+  "m</NAME><FILE>canvasForm.oc</FILE></FORM></FORMS></PROJECT>"
 }
 
 // app definition
@@ -33,53 +34,241 @@
     largeh8 = "graphics\\icon_lh8.bmp"
     smallh8 = "graphics\\icon_sh8.bmp"
   }
+  bitmap Bitmap picoCanvasBMP {
+    id = 1002
+    image8 = "graphics\\picocanvas-banner-lr-8b.bmp"
+  }
+  bitmap Bitmap pencilImageBMP {
+    id = 1006
+    image8 = "graphics\\pencil-image-lr-8b.bmp"
+  }
   form UIForm mainForm {
     id = 1000
     text = ""
     x = 0, y = 0, w = 160, h = 160
-    menuid = 0, helpid = 0, defbuttonid = 0
+    menuid = 1010, helpid = 0, defbuttonid = 0
     modal = false, resizable = false
     hresize = 0, vresize = 0
-    gadget CanvasGadget canvasGadget {
+    menubar UIMenuBar mainFormMenu {
+      id = 1010
+      menu UIMenu mfMenuOptions {
+        text = "Options"
+        menuitem UIMenuItem mfMenuOptPref {
+          id = 1035, sysid = 0, text = "Preferences", shortcut = "P"
+        }
+        menuitem UIMenuItem mfMenuOptHelp {
+          id = 1030, sysid = 0, text = "Help", shortcut = "H"
+        }
+        menuitem UIMenuItem mfMenuOptAbout {
+          id = 1029, sysid = 0, text = "About", shortcut = "A"
+        }
+        menuitem UIMenuItem menu1031 {
+          id = 1031, sysid = 0, text = "-"
+        }
+        menuitem UIMenuItem mfMenuOptExit {
+          id = 1011, sysid = 0, text = "Exit", shortcut = "E"
+        }
+      }
+    }
+    bitmap UIFBitmap bannerBMP {
+      id = 1005
+      x = 0, y = 0
+      bitmapid = 1002
+      hresize = 0, vresize = 0
+    }
+    bitmap UIFBitmap pencilBMP {
+      id = 1014
+      x = 137, y = 147
+      bitmapid = 1006
+      hresize = 0, vresize = 0
+    }
+    pushbutton UIPushButton push16px {
+      id = 1003
+      x = 71, y = 6, w = 34, h = 14
+      text = "16x16"
+      leftanchor = true, group = 1, fontid = 0
+      hresize = 0, vresize = 0
+    }
+    pushbutton UIPushButton push32px {
+      id = 1004
+      x = 71, y = 26, w = 34, h = 14
+      text = "32x32"
+      leftanchor = true, group = 1, fontid = 0
+      hresize = 0, vresize = 0
+    }
+    pushbutton UIPushButton newCanvasButton {
       id = 1001
+      x = 111, y = 6, w = 34, h = 34
+      text = "+"
+      leftanchor = true, group = 0, fontid = 2
+      hresize = 0, vresize = 0
+    }
+    button UIButton artwork1btn {
+      id = 1016
+      x = 15, y = 46, w = 34, h = 34
+      text = "1"
+      leftanchor = true, group = 0, fontid = 0
+      frame = 3
+      hresize = 0, vresize = 0
+    }
+    button UIButton artwork2btn {
+      id = 1015
+      x = 63, y = 46, w = 34, h = 34
+      text = "2"
+      leftanchor = true, group = 0, fontid = 0
+      frame = 3
+      hresize = 0, vresize = 0
+    }
+    button UIButton artwork3btn {
+      id = 1017
+      x = 111, y = 46, w = 34, h = 34
+      text = "3"
+      leftanchor = true, group = 0, fontid = 0
+      frame = 3
+      hresize = 0, vresize = 0
+    }
+    button UIButton artwork4btn {
+      id = 1020
+      x = 15, y = 95, w = 34, h = 34
+      text = "4"
+      leftanchor = true, group = 0, fontid = 0
+      frame = 3
+      hresize = 0, vresize = 0
+    }
+    button UIButton artwork5btn {
+      id = 1019
+      x = 63, y = 95, w = 34, h = 34
+      text = "5"
+      leftanchor = true, group = 0, fontid = 0
+      frame = 3
+      hresize = 0, vresize = 0
+    }
+    button UIButton artwork6btn {
+      id = 1018
+      x = 111, y = 95, w = 34, h = 34
+      text = "6"
+      leftanchor = true, group = 0, fontid = 0
+      frame = 3
+      hresize = 0, vresize = 0
+    }
+    label UILabel artwork1lbl {
+      id = 1021
+      x = 15, y = 81
+      fontid = 0
+      text = "Artwork"
+      hresize = 0, vresize = 0
+    }
+    label UILabel artwork2lbl {
+      id = 1022
+      x = 63, y = 81
+      fontid = 0
+      text = "Artwork"
+      hresize = 0, vresize = 0
+    }
+    label UILabel artwork3lbl {
+      id = 1023
+      x = 111, y = 81
+      fontid = 0
+      text = "Artwork"
+      hresize = 0, vresize = 0
+    }
+    label UILabel artwork4lbl {
+      id = 1024
+      x = 15, y = 130
+      fontid = 0
+      text = "Artwork"
+      hresize = 0, vresize = 0
+    }
+    label UILabel artwork5lbl {
+      id = 1025
+      x = 63, y = 130
+      fontid = 0
+      text = "Artwork"
+      hresize = 0, vresize = 0
+    }
+    label UILabel artwork6lbl {
+      id = 1026
+      x = 111, y = 130
+      fontid = 0
+      text = "Artwork"
+      hresize = 0, vresize = 0
+    }
+    button UIButton upArtButton {
+      id = 1027
+      x = 15, y = 144, w = 11, h = 11
+      text = "+"
+      leftanchor = true, group = 0, fontid = 0
+      frame = 3
+      hresize = 0, vresize = 0
+    }
+    button UIButton downArtButton {
+      id = 1028
+      x = 32, y = 144, w = 11, h = 11
+      text = "-"
+      leftanchor = true, group = 0, fontid = 0
+      frame = 3
+      hresize = 0, vresize = 0
+    }
+  }
+  form UIForm canvasForm {
+    id = 1007
+    text = ""
+    x = 0, y = 0, w = 160, h = 160
+    menuid = 1032, helpid = 0, defbuttonid = 0
+    modal = false, resizable = false
+    hresize = 0, vresize = 0
+    menubar UIMenuBar canvasFormMenu {
+      id = 1032
+      menu UIMenu cfMenuOptions {
+        text = "Options"
+        menuitem UIMenuItem cfMenuOptSave {
+          id = 1034, sysid = 0, text = "Save project", shortcut = "S"
+        }
+        menuitem UIMenuItem cfMenuOptClose {
+          id = 1033, sysid = 0, text = "Close project", shortcut = "C"
+        }
+      }
+    }
+    gadget CanvasGadget canvasGadget {
+      id = 1008
       x = 7, y = 24, w = 129, h = 129
       hresize = 0, vresize = 0
     }
-    checkbox UICheckbox soundCb {
-      id = 1003
-      x = 95, y = 11, w = 44, h = 11
-      text = "Sound"
+    button UIButton previousColorButton {
+      id = 1013
+      x = 144, y = 122, w = 8, h = 8
+      text = ""
       leftanchor = true, group = 0, fontid = 0
-      hresize = 0, vresize = 0
-    }
-    pushbutton UIPushButton push16 {
-      id = 1004
-      x = 8, y = 8, w = 12, h = 12
-      text = "16"
-      leftanchor = true, group = 1, fontid = 0
-      hresize = 0, vresize = 0
-    }
-    pushbutton UIPushButton push32 {
-      id = 1005
-      x = 21, y = 8, w = 12, h = 12
-      text = "32"
-      leftanchor = true, group = 1, fontid = 0
+      frame = 3
       hresize = 0, vresize = 0
     }
     button UIButton colorButton {
-      id = 1006
-      x = 43, y = 8, w = 12, h = 12
+      id = 1012
+      x = 140, y = 140, w = 12, h = 12
       text = ""
       leftanchor = true, group = 0, fontid = 0
       frame = 3
       hresize = 0, vresize = 0
     }
-    button UIButton previousColorButton {
-      id = 1002
-      x = 60, y = 11, w = 9, h = 9
-      text = ""
-      leftanchor = true, group = 0, fontid = 0
-      frame = 3
+    pushbutton UIPushButton pushToolPencil {
+      id = 1036
+      x = 8, y = 8, w = 12, h = 12
+      text = "P"
+      leftanchor = true, group = 1, fontid = 0
+      hresize = 0, vresize = 0
+    }
+    pushbutton UIPushButton pushToolMarker {
+      id = 1037
+      x = 25, y = 8, w = 12, h = 12
+      text = "M"
+      leftanchor = true, group = 1, fontid = 0
+      hresize = 0, vresize = 0
+    }
+    pushbutton UIPushButton pushToolEraser {
+      id = 1038
+      x = 42, y = 8, w = 12, h = 12
+      text = "E"
+      leftanchor = true, group = 1, fontid = 0
       hresize = 0, vresize = 0
     }
   }
@@ -88,3 +277,4 @@
 // source files
 #include "PicoCanvas.oc"
 #include "mainform.oc"
+#include "canvasForm.oc"

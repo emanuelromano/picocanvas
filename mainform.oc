@@ -1,100 +1,27 @@
-// mainform.oc
-// Created for mainForm
-
+// Global variables
 Draw draw;
-int gridSize, pixelColorIndex, prevPixelColorIndex;
+int gridSize;
+bool soundEnabled = false;
+
 
 handler mainForm.onopen() {
 	draw.attachForm(this);
 	
-	soundCb.checked = true;
-	push16.checked = true;
-	gridSize = 16;
-	
-	pixelColorIndex = 255; // black
-	prevPixelColorIndex = 119; // red
-	
-	canvasGadget.SetParameters(soundCb.checked, gridSize);
-	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+	push16px.checked = true;
 }
 
 
 handler mainForm.ondraw() {
 	draw.begin();
-	// Color selected
-	draw.fg(pixelColorIndex);
-	draw.rect(clrFG, 44, 9, 54, 19, 0);
-	
-	// Previous color selected
-	draw.fg(prevPixelColorIndex);
-	draw.rect(clrFG, 61, 12, 68, 19, 0);
 	draw.end();
 }
 
 
-handler push16.onselect() {
-	gridSize = 16;
-	
-	canvasGadget.SetParameters(soundCb.checked, gridSize);
-	canvasGadget.onopen();
-	canvasGadget.ondraw();
-}
-
-
-handler push32.onselect() {
-	gridSize = 32;
-	
-	canvasGadget.SetParameters(soundCb.checked, gridSize);
-	canvasGadget.onopen();
-	canvasGadget.ondraw();
-}
-
-
-handler colorButton.onselect() {
-	int colorBridgeVar;
-	
-	colorBridgeVar = pixelColorIndex;
-	
-	if (draw.selectIndex("Choose pixel color...", &pixelColorIndex)) {
-		canvasGadget.SetPixelColorIndex(pixelColorIndex);
-		prevPixelColorIndex = colorBridgeVar;
-		
-		draw.begin();
-		// Color selected
-		draw.fg(pixelColorIndex);
-		draw.rect(clrFG, 44, 9, 54, 19, 0);
-		
-		// Previous color selected
-		draw.fg(colorBridgeVar);
-		draw.rect(clrFG, 61, 12, 68, 19, 0);
-		draw.end();
-	}
+handler newCanvasButton.onselect() {
+	if (push16px.checked)
+		gridSize = 16;
 	else
-	{
-		draw.begin();
-		draw.fg(colorBridgeVar);
-		draw.rect(clrFG, 44, 9, 54, 19, 0);
-		draw.end();
-	}
-}
+		gridSize = 32;
 
-
-handler previousColorButton.onselect() {
-	int colorBridgeVar;
-	
-	colorBridgeVar = pixelColorIndex;
-	pixelColorIndex = prevPixelColorIndex;
-	prevPixelColorIndex = colorBridgeVar;
-	
-	draw.begin();
-	// Color selected
-	draw.fg(pixelColorIndex);
-	draw.rect(clrFG, 44, 9, 54, 19, 0);
-	
-	// Previous color selected
-	draw.fg(prevPixelColorIndex);
-	draw.rect(clrFG, 61, 12, 68, 19, 0);
-	draw.end();
-	
-	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+	canvasForm.load();
 }

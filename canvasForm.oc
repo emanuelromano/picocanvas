@@ -1,0 +1,132 @@
+//Global variables used in canvas form
+int pixelColorIndex,
+	prevPixelColorIndex,
+	eraserColorIndex;
+
+
+handler canvasForm.onopen() {
+	draw.attachForm(this);
+	
+	// Pencil as the first tool usable
+	pushToolPencil.checked = true;
+	
+	pixelColorIndex = 255; // black
+	prevPixelColorIndex = 119; // red
+	
+	canvasGadget.SetParameters(soundEnabled, gridSize);
+	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+}
+
+
+handler canvasForm.ondraw() {
+	draw.begin();
+	// Previous color selected
+	draw.fg(prevPixelColorIndex);
+	draw.rect(clrFG, 145, 123, 151, 129, 0);
+	
+	// Switch color arrow
+	draw.fgRGB(187, 187, 187);
+	draw.line(clrFG, 147, 132, 147, 137);
+	draw.line(clrFG, 148, 132, 148, 137);
+	draw.line(clrFG, 145, 135, 150, 135);
+	draw.line(clrFG, 146, 136, 149, 136);
+	
+	// Color selected
+	draw.fg(pixelColorIndex);
+	draw.rect(clrFG, 141, 141, 151, 151, 0);
+	draw.end();
+}
+
+
+/*handler push16.onselect() {
+	gridSize = 16;
+	
+	canvasGadget.SetParameters(soundEnabled, gridSize);
+	canvasGadget.onopen();
+	canvasGadget.ondraw();
+}*/
+
+
+/*handler push32.onselect() {
+	gridSize = 32;
+	
+	canvasGadget.SetParameters(soundEnabled, gridSize);
+	canvasGadget.onopen();
+	canvasGadget.ondraw();
+}*/
+
+
+handler colorButton.onselect() {
+	int colorBridgeVar;
+	
+	colorBridgeVar = pixelColorIndex;
+	
+	if (draw.selectIndex("Choose pixel color...", &pixelColorIndex)) {
+		canvasGadget.SetPixelColorIndex(pixelColorIndex);
+		prevPixelColorIndex = colorBridgeVar;
+		
+		draw.begin();
+		// Previous color selected
+		draw.fg(colorBridgeVar);
+		draw.rect(clrFG, 145, 123, 151, 129, 0);
+		
+		// Color selected
+		draw.fg(pixelColorIndex);
+		draw.rect(clrFG, 141, 141, 151, 151, 0);
+		draw.end();
+	}
+	else
+	{
+		draw.begin();
+		draw.fg(colorBridgeVar);
+		draw.rect(clrFG, 141, 141, 151, 151, 0);
+		draw.end();
+	}
+}
+
+
+handler previousColorButton.onselect() {
+	int colorBridgeVar;
+	
+	colorBridgeVar = pixelColorIndex;
+	pixelColorIndex = prevPixelColorIndex;
+	prevPixelColorIndex = colorBridgeVar;
+	
+	draw.begin();
+	// Previous color selected
+	draw.fg(colorBridgeVar);
+	draw.rect(clrFG, 145, 123, 151, 129, 0);
+	
+	// Color selected
+	draw.fg(pixelColorIndex);
+	draw.rect(clrFG, 141, 141, 151, 151, 0);
+	draw.end();
+	
+	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+}
+
+
+/*handler soundCb.onselect() {
+	if (soundEnabled)
+		soundEnabled = false;
+	else
+		soundEnabled = true;
+
+	canvasGadget.SetParameters(soundEnabled, gridSize);
+}*/
+
+
+handler cfMenuOptClose.onselect() {
+	mainForm.load();
+}
+
+
+handler pushToolPencil.onselect() {
+	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+}
+
+
+handler pushToolEraser.onselect() {
+	eraserColorIndex = 0;
+	canvasGadget.SetPixelColorIndex(eraserColorIndex);
+}
