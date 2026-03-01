@@ -54,6 +54,10 @@
     id = 1044
     image1 = "graphics\\eraser-icon-lr-1b.bmp"
   }
+  bitmap Bitmap colorPickerToolIconBMP {
+    id = 1046
+    image1 = "graphics\\colorpicker-icon-lr-1b.bmp"
+  }
   form UIForm mainForm {
     id = 1000
     text = ""
@@ -295,10 +299,18 @@
     }
     pushbutton UIPushButton pushToolEraser {
       id = 1038
-      x = 42, y = 8, w = 12, h = 12
+      x = 59, y = 8, w = 12, h = 12
       text = "E"
       leftanchor = true, group = 1, fontid = 0
       graphic = true, bitmapid = 1044, sbitmapid = 0
+      hresize = 0, vresize = 0
+    }
+    pushbutton UIPushButton pushToolColorPicker {
+      id = 1045
+      x = 42, y = 8, w = 12, h = 12
+      text = "E"
+      leftanchor = true, group = 1, fontid = 0
+      graphic = true, bitmapid = 1046, sbitmapid = 0
       hresize = 0, vresize = 0
     }
   }
