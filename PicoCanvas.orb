@@ -42,6 +42,18 @@
     id = 1006
     image8 = "graphics\\pencil-image-lr-8b.bmp"
   }
+  bitmap Bitmap pencilToolIconBMP {
+    id = 1042
+    image1 = "graphics\\pencil-icon-lr-1b.bmp"
+  }
+  bitmap Bitmap markerToolIconBMP {
+    id = 1043
+    image1 = "graphics\\marker-icon-lr-1b.bmp"
+  }
+  bitmap Bitmap eraserToolIconBMP {
+    id = 1044
+    image1 = "graphics\\eraser-icon-lr-1b.bmp"
+  }
   form UIForm mainForm {
     id = 1000
     text = ""
@@ -52,9 +64,9 @@
     menubar UIMenuBar mainFormMenu {
       id = 1010
       menu UIMenu mfMenuOptions {
-        text = "Options"
-        menuitem UIMenuItem mfMenuOptPref {
-          id = 1035, sysid = 0, text = "Preferences", shortcut = "P"
+        text = "PicoCanvas"
+        menuitem UIMenuItem mfMenuOptSettings {
+          id = 1035, sysid = 0, text = "Settings", shortcut = "T"
         }
         menuitem UIMenuItem mfMenuOptHelp {
           id = 1030, sysid = 0, text = "Help", shortcut = "H"
@@ -219,13 +231,28 @@
     hresize = 0, vresize = 0
     menubar UIMenuBar canvasFormMenu {
       id = 1032
-      menu UIMenu cfMenuOptions {
-        text = "Options"
+      menu UIMenu cfMenuCanvasOptions {
+        text = "Canvas"
+        menuitem UIMenuItem cfMenuOptPrefs {
+          id = 1009, sysid = 0, text = "Preferences", shortcut = "P"
+        }
         menuitem UIMenuItem cfMenuOptSave {
-          id = 1034, sysid = 0, text = "Save project", shortcut = "S"
+          id = 1034, sysid = 0, text = "Save", shortcut = "S"
+        }
+        menuitem UIMenuItem cfMenuOptExport {
+          id = 1040, sysid = 0, text = "Export", shortcut = "E"
+        }
+        menuitem UIMenuItem menu1041 {
+          id = 1041, sysid = 0, text = "-"
         }
         menuitem UIMenuItem cfMenuOptClose {
-          id = 1033, sysid = 0, text = "Close project", shortcut = "C"
+          id = 1033, sysid = 0, text = "Close", shortcut = "C"
+        }
+      }
+      menu UIMenu cfMenuOptions {
+        text = "Options"
+        menuitem UIMenuItem cfCanvasOptSettings {
+          id = 1039, sysid = 0, text = "Settings", shortcut = "T"
         }
       }
     }
@@ -236,7 +263,7 @@
     }
     button UIButton previousColorButton {
       id = 1013
-      x = 144, y = 122, w = 8, h = 8
+      x = 142, y = 122, w = 8, h = 8
       text = ""
       leftanchor = true, group = 0, fontid = 0
       frame = 3
@@ -255,6 +282,7 @@
       x = 8, y = 8, w = 12, h = 12
       text = "P"
       leftanchor = true, group = 1, fontid = 0
+      graphic = true, bitmapid = 1042, sbitmapid = 0
       hresize = 0, vresize = 0
     }
     pushbutton UIPushButton pushToolMarker {
@@ -262,6 +290,7 @@
       x = 25, y = 8, w = 12, h = 12
       text = "M"
       leftanchor = true, group = 1, fontid = 0
+      graphic = true, bitmapid = 1043, sbitmapid = 0
       hresize = 0, vresize = 0
     }
     pushbutton UIPushButton pushToolEraser {
@@ -269,6 +298,7 @@
       x = 42, y = 8, w = 12, h = 12
       text = "E"
       leftanchor = true, group = 1, fontid = 0
+      graphic = true, bitmapid = 1044, sbitmapid = 0
       hresize = 0, vresize = 0
     }
   }

@@ -1,4 +1,6 @@
-//Global variables used in canvas form
+// Canvas form
+
+//Global variables for canvas form
 int pixelColorIndex,
 	prevPixelColorIndex,
 	eraserColorIndex;
@@ -22,14 +24,14 @@ handler canvasForm.ondraw() {
 	draw.begin();
 	// Previous color selected
 	draw.fg(prevPixelColorIndex);
-	draw.rect(clrFG, 145, 123, 151, 129, 0);
+	draw.rect(clrFG, 143, 123, 149, 129, 0);
 	
 	// Switch color arrow
 	draw.fgRGB(187, 187, 187);
-	draw.line(clrFG, 147, 132, 147, 137);
-	draw.line(clrFG, 148, 132, 148, 137);
-	draw.line(clrFG, 145, 135, 150, 135);
-	draw.line(clrFG, 146, 136, 149, 136);
+	draw.line(clrFG, 145, 132, 145, 137);
+	draw.line(clrFG, 146, 132, 146, 137);
+	draw.line(clrFG, 143, 135, 148, 135);
+	draw.line(clrFG, 144, 136, 147, 136);
 	
 	// Color selected
 	draw.fg(pixelColorIndex);
@@ -68,12 +70,17 @@ handler colorButton.onselect() {
 		draw.begin();
 		// Previous color selected
 		draw.fg(colorBridgeVar);
-		draw.rect(clrFG, 145, 123, 151, 129, 0);
+		draw.rect(clrFG, 143, 123, 149, 129, 0);
 		
 		// Color selected
 		draw.fg(pixelColorIndex);
 		draw.rect(clrFG, 141, 141, 151, 151, 0);
 		draw.end();
+		
+		// Set pencil as selected tool again
+		pushToolEraser.checked = false;
+		pushToolMarker.checked = false;
+		pushToolPencil.checked = true;
 	}
 	else
 	{
@@ -92,17 +99,22 @@ handler previousColorButton.onselect() {
 	pixelColorIndex = prevPixelColorIndex;
 	prevPixelColorIndex = colorBridgeVar;
 	
+	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+	
 	draw.begin();
 	// Previous color selected
-	draw.fg(colorBridgeVar);
-	draw.rect(clrFG, 145, 123, 151, 129, 0);
+	draw.fg(prevPixelColorIndex);
+	draw.rect(clrFG, 143, 123, 149, 129, 0);
 	
 	// Color selected
 	draw.fg(pixelColorIndex);
 	draw.rect(clrFG, 141, 141, 151, 151, 0);
 	draw.end();
 	
-	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+	// Set pencil as selected tool again
+	pushToolEraser.checked = false;
+	pushToolMarker.checked = false;
+	pushToolPencil.checked = true;
 }
 
 

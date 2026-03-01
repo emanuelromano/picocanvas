@@ -1,3 +1,5 @@
+// Main form
+
 // Global variables
 Draw draw;
 int gridSize;
@@ -12,8 +14,7 @@ handler mainForm.onopen() {
 
 
 handler mainForm.ondraw() {
-	draw.begin();
-	draw.end();
+
 }
 
 

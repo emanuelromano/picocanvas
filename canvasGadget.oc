@@ -42,16 +42,20 @@ int toneHz = 10000,
 	sleepMs = 20;
 
 
+// Set parameters stored in global bariables inside the gadget.
 void CanvasGadget.SetParameters(bool soundFlag, int canvas) {
 	soundEnabled = soundFlag;
 	canvasSize = canvas;
 }
 
+
+// Set pixel color index for drawing
 void CanvasGadget.SetPixelColorIndex(int colorIndex) {
 	pixelColorIndex = colorIndex;
 }
 
 
+// Set initial canvas sixe and calculate cel and pixel size
 void CanvasGadget.SetCanvasSize(int size) {
 	gridSize  = size;
 	cellSize  = (gadget.w - 1) / gridSize;
@@ -59,6 +63,7 @@ void CanvasGadget.SetCanvasSize(int size) {
 }
 
 
+// Canvas background grid for reference
 void CanvasGadget.DrawCanvasGrid() {
 	int i, coord;
 	
