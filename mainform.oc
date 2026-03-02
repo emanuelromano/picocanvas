@@ -2,7 +2,7 @@
 
 // Global variables
 Draw draw;
-int gridSize;
+int gridSize, toolSelected;
 bool soundEnabled = false;
 
 

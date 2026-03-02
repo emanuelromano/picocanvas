@@ -14,9 +14,18 @@ handler canvasForm.onopen() {
 	
 	pixelColorIndex = 255; // black
 	prevPixelColorIndex = 119; // red
+	toolSelected = 0;
 	
-	canvasGadget.SetParameters(soundEnabled, gridSize);
-	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+	/*
+	0 = pencil
+	1 = marker
+	2 = eyedropper
+	3 = fill
+	4 = eraser
+	*/
+	
+	canvasGadget.SetParameters(soundEnabled, gridSize, toolSelected);
+	canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
 }
 
 
@@ -64,7 +73,7 @@ handler colorButton.onselect() {
 	colorBridgeVar = pixelColorIndex;
 	
 	if (draw.selectIndex("Choose pixel color...", &pixelColorIndex)) {
-		canvasGadget.SetPixelColorIndex(pixelColorIndex);
+		canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
 		prevPixelColorIndex = colorBridgeVar;
 		
 		draw.begin();
@@ -78,9 +87,10 @@ handler colorButton.onselect() {
 		draw.end();
 		
 		// Set pencil as selected tool again
-		pushToolEraser.checked = false;
-		pushToolMarker.checked = false;
 		pushToolPencil.checked = true;
+		pushToolMarker.checked = false;
+		pushToolEyedropper.checked = false;
+		pushToolEraser.checked = false;
 	}
 	else
 	{
@@ -99,7 +109,7 @@ handler previousColorButton.onselect() {
 	pixelColorIndex = prevPixelColorIndex;
 	prevPixelColorIndex = colorBridgeVar;
 	
-	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+	canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
 	
 	draw.begin();
 	// Previous color selected
@@ -112,20 +122,26 @@ handler previousColorButton.onselect() {
 	draw.end();
 	
 	// Set pencil as selected tool again
-	pushToolEraser.checked = false;
-	pushToolMarker.checked = false;
 	pushToolPencil.checked = true;
+	pushToolMarker.checked = false;
+	pushToolEyedropper.checked = false;
+	pushToolEraser.checked = false;
 }
 
 
-/*handler soundCb.onselect() {
-	if (soundEnabled)
-		soundEnabled = false;
-	else
-		soundEnabled = true;
+void updateColorUI(int newColor, int oldColor) {
+	draw.begin();
 
-	canvasGadget.SetParameters(soundEnabled, gridSize);
-}*/
+	// Previous color
+	draw.fg(oldColor);
+	draw.rect(clrFG, 143, 123, 149, 129, 0);
+
+	// Current color
+	draw.fg(newColor);
+	draw.rect(clrFG, 141, 141, 151, 151, 0);
+
+	draw.end();
+}
 
 
 handler cfMenuOptClose.onselect() {
@@ -134,11 +150,52 @@ handler cfMenuOptClose.onselect() {
 
 
 handler pushToolPencil.onselect() {
-	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+	toolSelected = 0;
+	
+	canvasGadget.SetTool(toolSelected);
+	canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
 }
 
 
 handler pushToolEraser.onselect() {
+	toolSelected = 3;
+	
 	eraserColorIndex = 0;
-	canvasGadget.SetPixelColorIndex(eraserColorIndex);
+	canvasGadget.SetPixelColorIndex(toolSelected, eraserColorIndex);
+}
+
+
+handler pushToolEyedropper.onselect() {
+	toolSelected = 2;
+	
+	canvasGadget.SetTool(toolSelected);	
+}
+
+
+handler canvasGadget.onpenup() {
+	if (toolSelected == 2) { // Eyedropper
+
+		toolSelected = 0; // Back to pencil
+
+		// Get canvas ccolors
+		prevPixelColorIndex = canvasGadget.ReturnPreviousColorIndex();
+
+		// Set new color
+		pixelColorIndex = canvasGadget.ReturnColorIndex();
+
+		// Set gadget parameters
+		canvasGadget.SetParameters(soundEnabled, gridSize, toolSelected);
+		canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
+
+		// Refraw buttons
+		updateColorUI(pixelColorIndex, prevPixelColorIndex);
+
+		// Set pencil as selected tool again
+		pushToolPencil.checked = true;
+		pushToolMarker.checked = false;
+		pushToolEyedropper.checked = false;
+		pushToolEraser.checked = false;
+	}
+
+	canvasGadget.SetPenUpParameter();
 }

@@ -12,9 +12,15 @@ struct CanvasGadget {
 	void onpenup();
 
 	// Internal methods
-	void SetParameters(bool soundFlag, int canvas);
-	void SetPixelColorIndex(int colorIndex);
+	void SetParameters(bool soundFlag, int canvas, int tool);
+	void SetPenUpParameter();
+	void SetPixelColorIndex(int toolSelected, int colorIndex);
 	void SetCanvasSize(int size);
+	void SetTool(int tool);
+	int GetIndex(int row, int col);
+	void EyedropperColorIndex(int penX, int penY);
+	int ReturnColorIndex();
+	int ReturnPreviousColorIndex();
 	void DrawCanvasGrid();
 	void DrawPixel(int penX, int penY);
 	void DrawLineCells(int col0, int row0, int col1, int row1);
@@ -27,10 +33,15 @@ struct CanvasGadget {
 	int		gridSize; // 16 - 32
 	int		cellSize; // 8 - 4
 	int		pixelSize; // 7 - 3
+	int		toolSelected;
 	int		pixelColorIndex;
+	int		previousPixelColorIndex;
 	int		lastRow;
 	int		lastCol;
 	bool	penIsDown;
+	
+	// Canvas grid array
+	int		canvas[1024]; // 32 * 32
 };
 
 
@@ -43,14 +54,22 @@ int toneHz = 10000,
 
 
 // Set parameters stored in global bariables inside the gadget.
-void CanvasGadget.SetParameters(bool soundFlag, int canvas) {
+void CanvasGadget.SetParameters(bool soundFlag, int canvas, int tool) {
 	soundEnabled = soundFlag;
 	canvasSize = canvas;
+	toolSelected = tool;
+}
+
+
+void CanvasGadget.SetPenUpParameter() {
+	penIsDown = false;
 }
 
 
 // Set pixel color index for drawing
-void CanvasGadget.SetPixelColorIndex(int colorIndex) {
+void CanvasGadget.SetPixelColorIndex(int toolSelected, int colorIndex) {
+	if (toolSelected != 3) previousPixelColorIndex = pixelColorIndex;
+	
 	pixelColorIndex = colorIndex;
 }
 
@@ -60,6 +79,63 @@ void CanvasGadget.SetCanvasSize(int size) {
 	gridSize  = size;
 	cellSize  = (gadget.w - 1) / gridSize;
 	pixelSize = cellSize - 1;
+}
+
+
+void CanvasGadget.SetTool(int tool) {
+	toolSelected = tool;
+	
+	/*
+	0 = pencil
+	1 = marker
+	2 = eyedropper
+	3 = fill
+	4 = eraser
+	*/
+}
+
+
+// Get index in canvas
+int CanvasGadget.GetIndex(int row, int col) {
+	return row * gridSize + col;
+}
+
+
+void CanvasGadget.EyedropperColorIndex(int penX, int penY) {
+	int col, row;
+	int px1, py1;
+
+	// Out of area
+	if (penX < 1 || penY < 1) return;
+	if (penX >= gadget.w-1 || penY >= gadget.h-1) return;
+
+	// Ignore grid lines
+	//if (((penX - 1) % cellSize) == 0) return;
+	//if (((penY - 1) % cellSize) == 0) return;
+
+	col = (penX - 1) / cellSize;
+	row = (penY - 1) / cellSize;
+
+	if (col < 0 || col >= gridSize) return;
+	if (row < 0 || row >= gridSize) return;
+
+	px1 = col * cellSize + 1;
+	py1 = row * cellSize + 1;
+	
+	previousPixelColorIndex = pixelColorIndex;
+	
+	// Set picked color
+	pixelColorIndex = canvas[GetIndex(row, col)];
+}
+
+
+int CanvasGadget.ReturnColorIndex() {
+	return pixelColorIndex;
+}
+
+
+int CanvasGadget.ReturnPreviousColorIndex() {
+	return previousPixelColorIndex;
 }
 
 
@@ -141,6 +217,9 @@ void CanvasGadget.DrawPixel(int penX, int penY) {
 		py1 + pixelSize,
 		0
 	);
+	
+	// Save color index in canvas grid array
+	canvas[GetIndex(row, col)] = pixelColorIndex;
 }
 
 
@@ -179,6 +258,9 @@ void CanvasGadget.DrawLineCells(int col0, int row0, int col1, int row1) {
 			py1 + pixelSize,
 			0
 		);
+		
+		// Save color index in canvas grid array
+		canvas[GetIndex(row0, col0)] = pixelColorIndex;
 
 		if (col0 == col1 && row0 == row1)
 			break;
@@ -199,9 +281,16 @@ void CanvasGadget.DrawLineCells(int col0, int row0, int col1, int row1) {
 
 
 void CanvasGadget.onopen() {
+	int i;
+	
 	draw.attachGadget(gadget);
-
+	
 	SetCanvasSize(canvasSize); // 16 - 32
+	
+	// Start canvas color in white inside grid array
+	for (i = 0; i < gridSize * gridSize; i++) {
+		canvas[i] = 0;   // White
+	}
 }
 
 
@@ -215,10 +304,18 @@ void CanvasGadget.onpendown() {
 	int penY = e.y;
 
 	penIsDown = true;
-
+	
 	draw.begin();
-	DrawPixel(penX, penY);
-
+	
+	switch (toolSelected) {
+		case 0:
+			DrawPixel(penX, penY);
+			break;
+		case 2:
+			EyedropperColorIndex(penX, penY);
+			break;
+	}
+	
 	// Save last pixel
 	lastCol = (penX - 1) / cellSize;
 	lastRow = (penY - 1) / cellSize;
@@ -234,28 +331,30 @@ void CanvasGadget.onpenmove() {
 	int penY = e.y;
 	int col, row;
 
-	if (!penIsDown) return;
-
-	col = (penX - 1) / cellSize;
-	row = (penY - 1) / cellSize;
-
-	if (col < 0 || col >= gridSize) return;
-	if (row < 0 || row >= gridSize) return;
-
-	if (col == lastCol && row == lastRow) return;
-
-	draw.begin();
-	draw.fg(pixelColorIndex);
-
-	DrawLineCells(lastCol, lastRow, col, row);
-
-	draw.end();
-
-	lastCol = col;
-	lastRow = row;
+	if (toolSelected == 0) { // Pencil
+		if (!penIsDown) return;
+	
+		col = (penX - 1) / cellSize;
+		row = (penY - 1) / cellSize;
+	
+		if (col < 0 || col >= gridSize) return;
+		if (row < 0 || row >= gridSize) return;
+	
+		if (col == lastCol && row == lastRow) return;
+	
+		draw.begin();
+		draw.fg(pixelColorIndex);
+	
+		DrawLineCells(lastCol, lastRow, col, row);
+	
+		draw.end();
+	
+		lastCol = col;
+		lastRow = row;
+	}
 }
 
 
-void CanvasGadget.onpenup() {
+/*void CanvasGadget.onpenup() {
 	penIsDown = false;
-}
+}*/

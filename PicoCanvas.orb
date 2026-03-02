@@ -305,7 +305,7 @@
       graphic = true, bitmapid = 1044, sbitmapid = 0
       hresize = 0, vresize = 0
     }
-    pushbutton UIPushButton pushToolColorPicker {
+    pushbutton UIPushButton pushToolEyedropper {
       id = 1045
       x = 42, y = 8, w = 12, h = 12
       text = "E"
