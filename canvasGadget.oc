@@ -189,6 +189,7 @@ void CanvasGadget.DrawCanvasGrid() {
 void CanvasGadget.DrawPixel(int penX, int penY) {
 	int col, row;
 	int px1, py1;
+	int drawColor;
 
 	// Out of area
 	if (penX < 1 || penY < 1) return;
@@ -206,9 +207,14 @@ void CanvasGadget.DrawPixel(int penX, int penY) {
 
 	px1 = col * cellSize + 1;
 	py1 = row * cellSize + 1;
+
+	if (toolSelected == 3)
+		drawColor = 0; // Eraser
+	else
+		drawColor = pixelColorIndex;
 	
 	// Set pixel color
-	draw.fg(pixelColorIndex);
+	draw.fg(drawColor);
 
 	draw.rect(
 		clrFG,
