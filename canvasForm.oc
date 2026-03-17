@@ -25,7 +25,7 @@ handler canvasForm.onopen() {
 	*/
 	
 	canvasGadget.SetParameters(soundEnabled, gridSize, toolSelected);
-	canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
+	canvasGadget.SetPixelColorIndex(pixelColorIndex);
 }
 
 
@@ -55,9 +55,6 @@ handler colorButton.onselect() {
 	colorBridgeVar = pixelColorIndex;
 	
 	if (draw.selectIndex("Choose pixel color...", &pixelColorIndex)) {
-		canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
-		prevPixelColorIndex = colorBridgeVar;
-		
 		draw.begin();
 		// Previous color selected
 		draw.fg(colorBridgeVar);
@@ -73,6 +70,12 @@ handler colorButton.onselect() {
 		pushToolMarker.checked = false;
 		pushToolEyedropper.checked = false;
 		pushToolEraser.checked = false;
+		
+		toolSelected = 0;
+		canvasGadget.SetTool(toolSelected);
+		
+		canvasGadget.SetPixelColorIndex(pixelColorIndex);
+		prevPixelColorIndex = colorBridgeVar;
 	}
 	else
 	{
@@ -91,7 +94,7 @@ handler previousColorButton.onselect() {
 	pixelColorIndex = prevPixelColorIndex;
 	prevPixelColorIndex = colorBridgeVar;
 	
-	canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
+	canvasGadget.SetPixelColorIndex(pixelColorIndex);
 	
 	draw.begin();
 	// Previous color selected
@@ -135,7 +138,7 @@ handler pushToolPencil.onselect() {
 	toolSelected = 0;
 	
 	canvasGadget.SetTool(toolSelected);
-	canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
+	canvasGadget.SetPixelColorIndex(pixelColorIndex);
 }
 
 
@@ -143,15 +146,15 @@ handler pushToolEyedropper.onselect() {
 	toolSelected = 2;
 	
 	canvasGadget.SetTool(toolSelected);
-	//canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
 }
 
 
 handler pushToolEraser.onselect() {
 	toolSelected = 3;
+	canvasGadget.SetTool(toolSelected);
 	
-	eraserColorIndex = 0;
-	canvasGadget.SetPixelColorIndex(toolSelected, eraserColorIndex);
+	//eraserColorIndex = 0;
+	//canvasGadget.SetPixelColorIndex(eraserColorIndex);
 }
 
 
@@ -168,7 +171,7 @@ handler canvasGadget.onpenup() {
 
 		// Set gadget parameters
 		canvasGadget.SetParameters(soundEnabled, gridSize, toolSelected);
-		canvasGadget.SetPixelColorIndex(toolSelected, pixelColorIndex);
+		canvasGadget.SetPixelColorIndex(pixelColorIndex);
 
 		// Redraw buttons
 		updateButtonColors(pixelColorIndex, prevPixelColorIndex);

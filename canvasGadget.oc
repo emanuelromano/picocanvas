@@ -14,7 +14,7 @@ struct CanvasGadget {
 	// Internal methods
 	void SetParameters(bool soundFlag, int canvas, int tool);
 	void SetPenUpParameter();
-	void SetPixelColorIndex(int toolSelected, int colorIndex);
+	void SetPixelColorIndex(int colorIndex);
 	void SetCanvasSize(int size);
 	void SetTool(int tool);
 	int GetIndex(int row, int col);
@@ -46,7 +46,7 @@ struct CanvasGadget {
 
 
 // Gadget variables
-// Tone parameters
+// Tone parameters for sound
 int toneHz = 10000,
 	toneMs = 10,
 	toneVol = 5,
@@ -67,7 +67,7 @@ void CanvasGadget.SetPenUpParameter() {
 
 
 // Set pixel color index for drawing
-void CanvasGadget.SetPixelColorIndex(int toolSelected, int colorIndex) {
+void CanvasGadget.SetPixelColorIndex(int colorIndex) {
 	if (toolSelected != 3) previousPixelColorIndex = pixelColorIndex;
 	
 	pixelColorIndex = colorIndex;
@@ -320,6 +320,8 @@ void CanvasGadget.onpendown() {
 		case 2:
 			EyedropperColorIndex(penX, penY);
 			break;
+		case 3:
+			DrawPixel(penX, penY);
 	}
 	
 	// Save last pixel
@@ -336,8 +338,9 @@ void CanvasGadget.onpenmove() {
 	int penX = e.x;
 	int penY = e.y;
 	int col, row;
+	int drawColor;
 
-	if (toolSelected == 0) { // Pencil
+	if (toolSelected == 0 || toolSelected == 3) { // Pencil
 		if (!penIsDown) return;
 	
 		col = (penX - 1) / cellSize;
@@ -348,8 +351,13 @@ void CanvasGadget.onpenmove() {
 	
 		if (col == lastCol && row == lastRow) return;
 	
+		if (toolSelected == 3)
+			drawColor = 0; // Eraser
+		else
+			drawColor = pixelColorIndex;
+		
 		draw.begin();
-		draw.fg(pixelColorIndex);
+		draw.fg(drawColor);
 	
 		DrawLineCells(lastCol, lastRow, col, row);
 	
