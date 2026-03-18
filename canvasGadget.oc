@@ -234,6 +234,7 @@ void CanvasGadget.DrawLineCells(int col0, int row0, int col1, int row1) {
 	int sx, sy;
 	int err, e2;
 	int px1, py1;
+	int drawColor;
 
 	dx = col1 - col0;
 	if (dx < 0) dx = -dx;
@@ -266,7 +267,12 @@ void CanvasGadget.DrawLineCells(int col0, int row0, int col1, int row1) {
 		);
 		
 		// Save color index in canvas grid array
-		canvas[GetIndex(row0, col0)] = pixelColorIndex;
+		if (toolSelected == 3)
+			drawColor = 0; // Eraser
+		else
+			drawColor = pixelColorIndex;
+		
+		canvas[GetIndex(row0, col0)] = drawColor;
 
 		if (col0 == col1 && row0 == row1)
 			break;
@@ -351,8 +357,10 @@ void CanvasGadget.onpenmove() {
 	
 		if (col == lastCol && row == lastRow) return;
 	
-		if (toolSelected == 3)
+		if (toolSelected == 3) {
 			drawColor = 0; // Eraser
+			//pixelColorIndex = 0;
+			}
 		else
 			drawColor = pixelColorIndex;
 		
