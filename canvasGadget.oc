@@ -38,7 +38,7 @@ struct CanvasGadget {
 	int		previousPixelColorIndex;
 	int		lastRow;
 	int		lastCol;
-	bool	penIsDown;
+	bool	penDown;
 	
 	// Canvas grid array
 	int		canvas[1024]; // 32 * 32
@@ -62,7 +62,7 @@ void CanvasGadget.SetParameters(bool soundFlag, int canvas, int tool) {
 
 
 void CanvasGadget.SetPenUpParameter() {
-	penIsDown = false;
+	penDown = false;
 }
 
 
@@ -315,7 +315,7 @@ void CanvasGadget.onpendown() {
 	int penX = e.x;
 	int penY = e.y;
 
-	penIsDown = true;
+	penDown = true;
 	
 	draw.begin();
 	
@@ -347,7 +347,7 @@ void CanvasGadget.onpenmove() {
 	int drawColor;
 
 	if (toolSelected == 0 || toolSelected == 3) { // Pencil
-		if (!penIsDown) return;
+		if (!penDown) return;
 	
 		col = (penX - 1) / cellSize;
 		row = (penY - 1) / cellSize;
@@ -378,5 +378,5 @@ void CanvasGadget.onpenmove() {
 
 
 /*void CanvasGadget.onpenup() {
-	penIsDown = false;
+	penDown = false;
 }*/
