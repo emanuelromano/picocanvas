@@ -258,6 +258,12 @@
         menuitem UIMenuItem cfCanvasOptSettings {
           id = 1039, sysid = 0, text = "Settings", shortcut = "T"
         }
+        menuitem UIMenuItem cfCanvasOptHelp {
+          id = 1048, sysid = 0, text = "Help", shortcut = "H"
+        }
+        menuitem UIMenuItem cfCanvasOptAbout {
+          id = 1047, sysid = 0, text = "About", shortcut = "A"
+        }
       }
     }
     gadget CanvasGadget canvasGadget {
