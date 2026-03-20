@@ -146,6 +146,7 @@ handler pushToolEyedropper.onselect() {
 	toolSelected = 2;
 	
 	canvasGadget.SetTool(toolSelected);
+	//canvasGadget.SetPixelColorIndex(pixelColorIndex);
 }
 
 
