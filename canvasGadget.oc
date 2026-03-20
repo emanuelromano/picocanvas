@@ -346,7 +346,7 @@ void CanvasGadget.onpenmove() {
 	int col, row;
 	int drawColor;
 
-	if (toolSelected == 0 || toolSelected == 3) { // Pencil
+	if (toolSelected == 0 || toolSelected == 3) { // Pencil - Eraser
 		if (!penDown) return;
 	
 		col = (penX - 1) / cellSize;

@@ -154,7 +154,7 @@ handler pushToolEraser.onselect() {
 	canvasGadget.SetTool(toolSelected);
 	
 	//eraserColorIndex = 0;
-	//canvasGadget.SetPixelColorIndex(eraserColorIndex);
+	canvasGadget.SetPixelColorIndex(pixelColorIndex);
 }
 
 
