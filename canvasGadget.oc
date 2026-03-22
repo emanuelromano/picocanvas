@@ -225,7 +225,7 @@ void CanvasGadget.DrawPixel(int penX, int penY) {
 	);
 	
 	// Save color index in canvas grid array
-	canvas[GetIndex(row, col)] = pixelColorIndex;
+	canvas[GetIndex(row, col)] = drawColor;
 }
 
 

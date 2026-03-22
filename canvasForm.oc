@@ -153,8 +153,7 @@ handler pushToolEyedropper.onselect() {
 handler pushToolEraser.onselect() {
 	toolSelected = 3;
 	canvasGadget.SetTool(toolSelected);
-	
-	//eraserColorIndex = 0;
+
 	canvasGadget.SetPixelColorIndex(pixelColorIndex);
 }
 
