@@ -140,12 +140,7 @@ handler pushToolEraser.onselect() {
 handler canvasGadget.onpenup() {
 	int newColor, oldColor;
 	
-	if (toolSelected == 2) { // Eyedropper
-
-		// Set new color extraxted from canvas
-		//oldColor = pixelColorIndex;
-		//newColor = canvasGadget.ReturnColorIndex();
-		
+	if (toolSelected == 2) { // Eyedropper		
 		// Switch colors
 		switchColors(pixelColorIndex, prevPixelColorIndex);
 		

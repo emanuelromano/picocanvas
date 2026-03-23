@@ -33,6 +33,7 @@ struct CanvasGadget {
 	int		cellSize; // 8 - 4
 	int		pixelSize; // 7 - 3
 	int		toolSelected;
+	int		prevPixelColorIndex;
 	int		pixelColorIndex;
 	int		lastRow;
 	int		lastCol;
@@ -119,6 +120,7 @@ void CanvasGadget.EyedropperColor(int penX, int penY) {
 	py1 = row * cellSize + 1;
 	
 	// Set picked color
+	prevPixelColorIndex = pixelColorIndex;
 	pixelColorIndex = canvas[GetIndex(row, col)];
 }
 
