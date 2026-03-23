@@ -20,7 +20,7 @@ struct CanvasGadget {
 	int GetIndex(int row, int col);
 	void EyedropperColorIndex(int penX, int penY);
 	int ReturnColorIndex();
-	int ReturnPreviousColorIndex();
+	//int ReturnPreviousColorIndex();
 	void DrawCanvasGrid();
 	void DrawPixel(int penX, int penY);
 	void DrawLineCells(int col0, int row0, int col1, int row1);
@@ -35,7 +35,7 @@ struct CanvasGadget {
 	int		pixelSize; // 7 - 3
 	int		toolSelected;
 	int		pixelColorIndex;
-	int		previousPixelColorIndex;
+	//int		previousPixelColorIndex;
 	int		lastRow;
 	int		lastCol;
 	bool	penDown;
@@ -68,7 +68,7 @@ void CanvasGadget.SetPenUpParameter() {
 
 // Set pixel color index for drawing
 void CanvasGadget.SetPixelColorIndex(int colorIndex) {
-	if (toolSelected != 3) previousPixelColorIndex = pixelColorIndex;
+	//if (toolSelected != 3) previousPixelColorIndex = pixelColorIndex;
 	
 	pixelColorIndex = colorIndex;
 }
@@ -122,7 +122,7 @@ void CanvasGadget.EyedropperColorIndex(int penX, int penY) {
 	px1 = col * cellSize + 1;
 	py1 = row * cellSize + 1;
 	
-	previousPixelColorIndex = pixelColorIndex;
+	//previousPixelColorIndex = pixelColorIndex;
 	
 	// Set picked color
 	pixelColorIndex = canvas[GetIndex(row, col)];
@@ -134,9 +134,9 @@ int CanvasGadget.ReturnColorIndex() {
 }
 
 
-int CanvasGadget.ReturnPreviousColorIndex() {
+/*int CanvasGadget.ReturnPreviousColorIndex() {
 	return previousPixelColorIndex;
-}
+}*/
 
 
 // Canvas background grid for reference

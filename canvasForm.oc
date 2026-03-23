@@ -154,7 +154,7 @@ handler pushToolEraser.onselect() {
 	toolSelected = 3;
 	canvasGadget.SetTool(toolSelected);
 
-	canvasGadget.SetPixelColorIndex(pixelColorIndex);
+	//canvasGadget.SetPixelColorIndex(pixelColorIndex);
 }
 
 
@@ -163,8 +163,8 @@ handler canvasGadget.onpenup() {
 
 		toolSelected = 0; // Back to pencil
 
-		// Get canvas ccolors
-		prevPixelColorIndex = canvasGadget.ReturnPreviousColorIndex();
+		// Get canvas colors
+		//prevPixelColorIndex = canvasGadget.ReturnPreviousColorIndex();
 
 		// Set new color
 		pixelColorIndex = canvasGadget.ReturnColorIndex();
