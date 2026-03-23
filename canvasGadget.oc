@@ -1,5 +1,12 @@
 // Canvas gadget
 
+struct CanvasData {
+	int drawID;
+	string name;
+	int gridSize;
+	int pixels[1024];
+};
+
 struct CanvasGadget {
 	// A UIGadget must always be the first member of a gadget
 	UIGadget gadget;
@@ -23,6 +30,8 @@ struct CanvasGadget {
 	void DrawCanvasGrid();
 	void DrawPixel(int penX, int penY);
 	void DrawLineCells(int col0, int row0, int col1, int row1);
+	void GetCanvasData(int* outArray, int size);
+	void CopyTo(CanvasData* data);
 	
 	// Internal variables
 	Draw	draw;
@@ -80,8 +89,6 @@ void CanvasGadget.SetCanvasSize(int size) {
 
 
 void CanvasGadget.SetTool(int tool) {
-	toolSelected = tool;
-	
 	/*
 	0 = pencil
 	1 = marker
@@ -89,6 +96,8 @@ void CanvasGadget.SetTool(int tool) {
 	3 = fill
 	4 = eraser
 	*/
+	
+	toolSelected = tool;
 }
 
 
@@ -309,7 +318,6 @@ void CanvasGadget.onpendown() {
 	penDown = true;
 	
 	draw.begin();
-	
 	switch (toolSelected) {
 		case 0:
 			DrawPixel(penX, penY);
@@ -324,7 +332,6 @@ void CanvasGadget.onpendown() {
 	// Save last pixel
 	lastCol = (penX - 1) / cellSize;
 	lastRow = (penY - 1) / cellSize;
-
 	draw.end();
 
 	if (soundEnabled) tonea(toneHz, toneMs, toneVol);
@@ -357,9 +364,7 @@ void CanvasGadget.onpenmove() {
 		
 		draw.begin();
 		draw.fg(drawColor);
-	
 		DrawLineCells(lastCol, lastRow, col, row);
-	
 		draw.end();
 	
 		lastCol = col;
@@ -368,6 +373,21 @@ void CanvasGadget.onpenmove() {
 }
 
 
-/*void CanvasGadget.onpenup() {
-	penDown = false;
-}*/
+void CanvasGadget.GetCanvasData(int* outArray, int size) {
+	int i;
+
+	for (i = 0; i < size; i++) {
+		outArray[i] = canvas[i];
+	}
+}
+
+
+void CanvasGadget.CopyTo(CanvasData* data) {
+	int i;
+
+	data->gridSize = gridSize;
+
+	for (i = 0; i < gridSize * gridSize; i++) {
+		data->pixels[i] = canvas[i];
+	}
+}

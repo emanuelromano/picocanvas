@@ -5,16 +5,23 @@ int pixelColorIndex,
 	prevPixelColorIndex,
 	eraserColorIndex;
 
+/*struct CanvasData {
+	int drawID;
+	string name;
+	int gridSize;
+	int pixels[1024];
+};*/
+
+CanvasData canvasData;
+
+int tempCanvas[1024];
+
 
 handler canvasForm.onopen() {
 	draw.attachForm(this);
 	
-	// Pencil as the first tool usable
-	pushToolPencil.checked = true;
-	
 	pixelColorIndex = 255; // black
 	prevPixelColorIndex = 119; // red
-	toolSelected = 0;
 	
 	/*
 	0 = pencil
@@ -23,6 +30,10 @@ handler canvasForm.onopen() {
 	3 = fill
 	4 = eraser
 	*/
+	
+	// Pencil as the first tool usable
+	pushToolPencil.checked = true;
+	toolSelected = 0;
 	
 	canvasGadget.SetParameters(soundEnabled, gridSize, toolSelected);
 	canvasGadget.SetColor(pixelColorIndex);
@@ -33,7 +44,7 @@ handler canvasForm.ondraw() {
 	draw.begin();
 	// Previous color selected
 	draw.fg(prevPixelColorIndex);
-	draw.rect(clrFG, 143, 123, 149, 129, 0);
+	draw.rect(clrFG, 143, 123, 149, 129, 3);
 	
 	// Switch color arrow
 	draw.fgRGB(187, 187, 187);
@@ -44,7 +55,7 @@ handler canvasForm.ondraw() {
 	
 	// Color selected
 	draw.fg(pixelColorIndex);
-	draw.rect(clrFG, 141, 141, 151, 151, 0);
+	draw.rect(clrFG, 141, 141, 151, 151, 4);
 	draw.end();
 }
 
@@ -56,11 +67,11 @@ void switchColors(int newColor, int oldColor) {
 	draw.begin();
 	// Previous color
 	draw.fg(oldColor);
-	draw.rect(clrFG, 143, 123, 149, 129, 0);
+	draw.rect(clrFG, 143, 123, 149, 129, 3);
 
 	// Current color
 	draw.fg(newColor);
-	draw.rect(clrFG, 141, 141, 151, 151, 0);
+	draw.rect(clrFG, 141, 141, 151, 151, 4);
 	draw.end();
 }
 
@@ -71,7 +82,6 @@ handler colorButton.onselect() {
 	colorBridgeVar = pixelColorIndex;
 	
 	if (draw.selectIndex("Choose pixel color...", &pixelColorIndex)) {
-		
 		// Set pencil as selected tool again
 		pushToolPencil.checked = true;
 		pushToolMarker.checked = false;
@@ -104,11 +114,6 @@ handler previousColorButton.onselect() {
 	pushToolMarker.checked = false;
 	pushToolEyedropper.checked = false;
 	pushToolEraser.checked = false;
-}
-
-
-handler cfMenuOptClose.onselect() {
-	mainForm.load();
 }
 
 
@@ -158,4 +163,59 @@ handler canvasGadget.onpenup() {
 	}
 
 	canvasGadget.SetPenUpParameter();
+}
+
+
+void SaveCanvas() {
+	Database db;
+	DBRecord rec;
+	int recIndex;
+
+	if (db.open("PicoCanvasDB", true)) {
+
+		// usar siguiente índice
+		recIndex = db.nrecs;
+
+		// getrec crea el record si no existe
+		if (db.getrec(recIndex, rec, true)) {
+
+			rec.write(&canvasData, typeof(canvasData), 1);
+
+			rec.close();
+		}
+
+		db.close();
+	}
+	
+	alert("Records: " + db.nrecs);
+}
+
+
+// Save current drawing in canvas array
+void SaveCurrentCanvas() {
+	/*int tempCanvas[1024];
+	int i;
+
+	// Get gadget data
+	canvasGadget.GetCanvasData(tempCanvas, gridSize * gridSize);
+
+	// Convert to struct
+	canvasData.gridSize = gridSize;
+
+	for (i = 0; i < gridSize * gridSize; i++) {
+		canvasData.pixels[i] = tempCanvas[i];
+	}*/
+	
+	// Save in DB
+	canvasGadget.CopyTo(&canvasData);
+	SaveCanvas();
+}
+
+
+handler cfMenuOptClose.onselect() {
+	mainForm.load();
+}
+
+handler cfMenuOptSave.onselect() {
+	SaveCurrentCanvas();
 }

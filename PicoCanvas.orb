@@ -276,7 +276,7 @@
       x = 142, y = 122, w = 8, h = 8
       text = ""
       leftanchor = true, group = 0, fontid = 0
-      frame = 3
+      frame = 1
       hresize = 0, vresize = 0
     }
     button UIButton colorButton {
@@ -284,7 +284,7 @@
       x = 140, y = 140, w = 12, h = 12
       text = ""
       leftanchor = true, group = 0, fontid = 0
-      frame = 3
+      frame = 1
       hresize = 0, vresize = 0
     }
     pushbutton UIPushButton pushToolPencil {
