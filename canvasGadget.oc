@@ -14,13 +14,12 @@ struct CanvasGadget {
 	// Internal methods
 	void SetParameters(bool soundFlag, int canvas, int tool);
 	void SetPenUpParameter();
-	void SetPixelColorIndex(int colorIndex);
+	void SetColor(int colorIndex);
 	void SetCanvasSize(int size);
 	void SetTool(int tool);
 	int GetIndex(int row, int col);
-	void EyedropperColorIndex(int penX, int penY);
+	void EyedropperColor(int penX, int penY);
 	int ReturnColorIndex();
-	//int ReturnPreviousColorIndex();
 	void DrawCanvasGrid();
 	void DrawPixel(int penX, int penY);
 	void DrawLineCells(int col0, int row0, int col1, int row1);
@@ -35,7 +34,6 @@ struct CanvasGadget {
 	int		pixelSize; // 7 - 3
 	int		toolSelected;
 	int		pixelColorIndex;
-	//int		previousPixelColorIndex;
 	int		lastRow;
 	int		lastCol;
 	bool	penDown;
@@ -67,9 +65,7 @@ void CanvasGadget.SetPenUpParameter() {
 
 
 // Set pixel color index for drawing
-void CanvasGadget.SetPixelColorIndex(int colorIndex) {
-	//if (toolSelected != 3) previousPixelColorIndex = pixelColorIndex;
-	
+void CanvasGadget.SetColor(int colorIndex) {
 	pixelColorIndex = colorIndex;
 }
 
@@ -101,7 +97,7 @@ int CanvasGadget.GetIndex(int row, int col) {
 }
 
 
-void CanvasGadget.EyedropperColorIndex(int penX, int penY) {
+void CanvasGadget.EyedropperColor(int penX, int penY) {
 	int col, row;
 	int px1, py1;
 
@@ -122,8 +118,6 @@ void CanvasGadget.EyedropperColorIndex(int penX, int penY) {
 	px1 = col * cellSize + 1;
 	py1 = row * cellSize + 1;
 	
-	//previousPixelColorIndex = pixelColorIndex;
-	
 	// Set picked color
 	pixelColorIndex = canvas[GetIndex(row, col)];
 }
@@ -132,11 +126,6 @@ void CanvasGadget.EyedropperColorIndex(int penX, int penY) {
 int CanvasGadget.ReturnColorIndex() {
 	return pixelColorIndex;
 }
-
-
-/*int CanvasGadget.ReturnPreviousColorIndex() {
-	return previousPixelColorIndex;
-}*/
 
 
 // Canvas background grid for reference
@@ -324,7 +313,7 @@ void CanvasGadget.onpendown() {
 			DrawPixel(penX, penY);
 			break;
 		case 2:
-			EyedropperColorIndex(penX, penY);
+			EyedropperColor(penX, penY);
 			break;
 		case 3:
 			DrawPixel(penX, penY);
