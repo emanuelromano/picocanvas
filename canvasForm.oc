@@ -1,24 +1,10 @@
 // Canvas form
 
-//Global variables for canvas form
-int pixelColorIndex,
-	prevPixelColorIndex,
-	eraserColorIndex;
-
-/*struct CanvasData {
-	int drawID;
-	string name;
-	int gridSize;
-	int pixels[1024];
-};*/
-
-CanvasData canvasData;
-
-int tempCanvas[1024];
-
 
 handler canvasForm.onopen() {
 	draw.attachForm(this);
+	
+	initDatabase();
 	
 	pixelColorIndex = 255; // black
 	prevPixelColorIndex = 119; // red
@@ -163,52 +149,6 @@ handler canvasGadget.onpenup() {
 	}
 
 	canvasGadget.SetPenUpParameter();
-}
-
-
-void SaveCanvas() {
-	Database db;
-	DBRecord rec;
-	int recIndex;
-
-	if (db.open("PicoCanvasDB", true)) {
-
-		// usar siguiente índice
-		recIndex = db.nrecs;
-
-		// getrec crea el record si no existe
-		if (db.getrec(recIndex, rec, true)) {
-
-			rec.write(&canvasData, typeof(canvasData), 1);
-
-			rec.close();
-		}
-
-		db.close();
-	}
-	
-	alert("Records: " + db.nrecs);
-}
-
-
-// Save current drawing in canvas array
-void SaveCurrentCanvas() {
-	/*int tempCanvas[1024];
-	int i;
-
-	// Get gadget data
-	canvasGadget.GetCanvasData(tempCanvas, gridSize * gridSize);
-
-	// Convert to struct
-	canvasData.gridSize = gridSize;
-
-	for (i = 0; i < gridSize * gridSize; i++) {
-		canvasData.pixels[i] = tempCanvas[i];
-	}*/
-	
-	// Save in DB
-	canvasGadget.CopyTo(&canvasData);
-	SaveCanvas();
 }
 
 

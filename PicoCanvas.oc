@@ -1,6 +1,31 @@
 // PicoCanvas - Pixel art!
 // started 23/02/2026
 
+
+// Global variables
+Draw draw;
+int gridSize, toolSelected;
+bool soundEnabled = false;
+
+//Global variables for canvas form
+int pixelColorIndex,
+	prevPixelColorIndex,
+	eraserColorIndex;
+
+Event e;
+
+/*struct CanvasData {
+	int drawID;
+	string name;
+	int gridSize;
+	int pixels[1024];
+};*/
+
+CanvasData canvasData;
+
+int tempCanvas[1024];
+
+
 handler PicoCanvas.onstart() {
 	// load the main form
 	mainForm.load();

@@ -1,0 +1,65 @@
+// Database manager functions
+
+
+void initDatabase() {
+	Database db;
+
+	// intentar abrir
+	if (!db.open("PicoCanvasDB", false)) {
+
+		// crear si no existe
+		if (db.create("PicoCanvasDB", "data", "P1C0", false)) {
+			db.close();
+		} else {
+			alert("Unable to create database!");
+		}
+	}
+	else {
+		db.close();
+	}
+}
+
+
+void SaveCanvas() {
+	Database db;
+	DBRecord rec;
+	int recIndex;
+
+	if (db.open("PicoCanvasDB", false)) {
+
+		recIndex = db.nrecs;
+
+		if (db.getrec(recIndex, rec, true)) {
+			rec.write(&canvasData, typeof(canvasData), 1);
+			rec.close();
+		}
+
+		alert("Records: " + db.nrecs);
+
+		db.close();
+	}
+	else {
+		alert("DB open failed");
+	}
+}
+
+
+// Save current drawing in canvas array
+void SaveCurrentCanvas() {
+	/*int tempCanvas[1024];
+	int i;
+
+	// Get gadget data
+	canvasGadget.GetCanvasData(tempCanvas, gridSize * gridSize);
+
+	// Convert to struct
+	canvasData.gridSize = gridSize;
+
+	for (i = 0; i < gridSize * gridSize; i++) {
+		canvasData.pixels[i] = tempCanvas[i];
+	}*/
+	
+	// Save in DB
+	canvasGadget.CopyTo(&canvasData);
+	SaveCanvas();
+}

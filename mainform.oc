@@ -1,10 +1,5 @@
 // Main form
 
-// Global variables
-Draw draw;
-int gridSize, toolSelected;
-bool soundEnabled = false;
-
 
 handler mainForm.onopen() {
 	draw.attachForm(this);

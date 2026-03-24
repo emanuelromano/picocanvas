@@ -325,4 +325,5 @@
 // source files
 #include "PicoCanvas.oc"
 #include "mainform.oc"
+#include "databaseManager.oc"
 #include "canvasForm.oc"
