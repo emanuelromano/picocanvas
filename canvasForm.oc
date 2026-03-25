@@ -85,7 +85,7 @@ handler colorButton.onselect() {
 	{
 		draw.begin();
 		draw.fg(colorBridgeVar);
-		draw.rect(clrFG, 141, 141, 151, 151, 0);
+		draw.rect(clrFG, 141, 141, 151, 151, 4);
 		draw.end();
 	}
 }
