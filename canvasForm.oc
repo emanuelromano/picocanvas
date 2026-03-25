@@ -68,6 +68,10 @@ handler colorButton.onselect() {
 	colorBridgeVar = pixelColorIndex;
 	
 	if (draw.selectIndex("Choose pixel color...", &pixelColorIndex)) {
+		switchColors(pixelColorIndex, colorBridgeVar);
+		canvasGadget.SetColor(pixelColorIndex);
+		prevPixelColorIndex = colorBridgeVar;
+		
 		// Set pencil as selected tool again
 		pushToolPencil.checked = true;
 		pushToolMarker.checked = false;
@@ -76,10 +80,6 @@ handler colorButton.onselect() {
 		
 		toolSelected = 0;
 		canvasGadget.SetTool(toolSelected);
-		
-		switchColors(pixelColorIndex, colorBridgeVar);
-		canvasGadget.SetColor(pixelColorIndex);
-		prevPixelColorIndex = colorBridgeVar;
 	}
 	else
 	{
@@ -94,9 +94,7 @@ handler colorButton.onselect() {
 handler previousColorButton.onselect() {
 	switchColors(prevPixelColorIndex, pixelColorIndex);
 	canvasGadget.SetColor(pixelColorIndex);
-	
-	alert(prevPixelColorIndex + " - " + pixelColorIndex);
-	
+		
 	// Set pencil as selected tool again
 	pushToolPencil.checked = true;
 	pushToolMarker.checked = false;
@@ -139,18 +137,16 @@ handler canvasGadget.onpenup() {
 	if (toolSelected == 2) { // Eyedropper		
 		// Switch colors
 		switchColors(pixelColorIndex, prevPixelColorIndex);
-		
-		// Set gadget parameters
-		canvasGadget.SetTool(toolSelected);
-		canvasGadget.SetColor(pixelColorIndex);
 
 		// Set pencil as selected tool again
-		toolSelected = 0;
-		
 		pushToolPencil.checked = true;
 		pushToolMarker.checked = false;
 		pushToolEyedropper.checked = false;
 		pushToolEraser.checked = false;
+		
+		toolSelected = 0;
+		canvasGadget.SetTool(toolSelected);
+		canvasGadget.SetColor(pixelColorIndex);
 	}
 
 	canvasGadget.SetPenUpParameter();
