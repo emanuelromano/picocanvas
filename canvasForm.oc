@@ -95,11 +95,16 @@ handler previousColorButton.onselect() {
 	switchColors(prevPixelColorIndex, pixelColorIndex);
 	canvasGadget.SetColor(pixelColorIndex);
 	
+	alert(prevPixelColorIndex + " - " + pixelColorIndex);
+	
 	// Set pencil as selected tool again
 	pushToolPencil.checked = true;
 	pushToolMarker.checked = false;
 	pushToolEyedropper.checked = false;
 	pushToolEraser.checked = false;
+	
+	toolSelected = 0;
+	canvasGadget.SetTool(toolSelected);
 }
 
 
