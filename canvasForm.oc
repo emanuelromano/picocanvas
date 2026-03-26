@@ -18,6 +18,7 @@ handler canvasForm.onopen() {
 	*/
 	
 	// Pencil as the first tool usable
+	toolLabel.text = "Pencil";
 	pushToolPencil.checked = true;
 	toolSelected = 0;
 	
@@ -101,6 +102,7 @@ handler previousColorButton.onselect() {
 	pushToolEyedropper.checked = false;
 	pushToolEraser.checked = false;
 	
+	toolLabel.text = "Pencil";
 	toolSelected = 0;
 	canvasGadget.SetTool(toolSelected);
 }
@@ -108,6 +110,7 @@ handler previousColorButton.onselect() {
 
 // Tools: Pencil
 handler pushToolPencil.onselect() {
+	toolLabel.text = "Pencil";
 	toolSelected = 0;
 	
 	canvasGadget.SetTool(toolSelected);
@@ -117,6 +120,7 @@ handler pushToolPencil.onselect() {
 
 // Tools: Eyedropper
 handler pushToolEyedropper.onselect() {
+	toolLabel.text = "Eyedropper";
 	toolSelected = 2;
 	
 	canvasGadget.SetTool(toolSelected);
@@ -125,6 +129,7 @@ handler pushToolEyedropper.onselect() {
 
 // Tools: Eraser
 handler pushToolEraser.onselect() {
+	toolLabel.text = "Eraser";
 	toolSelected = 3;
 	
 	canvasGadget.SetTool(toolSelected);
@@ -144,6 +149,7 @@ handler canvasGadget.onpenup() {
 		pushToolEyedropper.checked = false;
 		pushToolEraser.checked = false;
 		
+		toolLabel.text = "Pencil";
 		toolSelected = 0;
 		canvasGadget.SetTool(toolSelected);
 		canvasGadget.SetColor(pixelColorIndex);
@@ -159,4 +165,9 @@ handler cfMenuOptClose.onselect() {
 
 handler cfMenuOptSave.onselect() {
 	SaveCurrentCanvas();
+}
+
+
+handler pushToolMarker.onselect() {
+	toolLabel.text = "Marker";
 }

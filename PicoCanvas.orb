@@ -289,7 +289,7 @@
     }
     pushbutton UIPushButton pushToolPencil {
       id = 1036
-      x = 8, y = 8, w = 12, h = 12
+      x = 140, y = 25, w = 12, h = 12
       text = "P"
       leftanchor = true, group = 1, fontid = 0
       graphic = true, bitmapid = 1042, sbitmapid = 0
@@ -297,7 +297,7 @@
     }
     pushbutton UIPushButton pushToolMarker {
       id = 1037
-      x = 25, y = 8, w = 12, h = 12
+      x = 140, y = 42, w = 12, h = 12
       text = "M"
       leftanchor = true, group = 1, fontid = 0
       graphic = true, bitmapid = 1043, sbitmapid = 0
@@ -305,7 +305,7 @@
     }
     pushbutton UIPushButton pushToolEraser {
       id = 1038
-      x = 59, y = 8, w = 12, h = 12
+      x = 140, y = 76, w = 12, h = 12
       text = "E"
       leftanchor = true, group = 1, fontid = 0
       graphic = true, bitmapid = 1044, sbitmapid = 0
@@ -313,10 +313,25 @@
     }
     pushbutton UIPushButton pushToolEyedropper {
       id = 1045
-      x = 42, y = 8, w = 12, h = 12
+      x = 140, y = 59, w = 12, h = 12
       text = "E"
       leftanchor = true, group = 1, fontid = 0
       graphic = true, bitmapid = 1046, sbitmapid = 0
+      hresize = 0, vresize = 0
+    }
+    label UILabel toolLabel {
+      id = 1049
+      x = 104, y = 11
+      fontid = 0
+      text = "Eyedropper"
+      hresize = 0, vresize = 0
+    }
+    field UIField field1050 {
+      id = 1050
+      x = 8, y = 11, w = 78, h = 12
+      fontid = 0, leftanchor = true, maxchars = 128
+      underline = true, singleline = true, dynamicsize = false, hasscroll = false
+      editable = true, autoshift = true, numeric = false
       hresize = 0, vresize = 0
     }
   }
