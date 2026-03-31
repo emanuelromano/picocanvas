@@ -28,21 +28,22 @@ void SaveCanvas() {
 	if (db.open("PicoCanvasDB", false)) {
 
 		recIndex = db.nrecs;
-
 		if (db.getrec(recIndex, rec, true)) {
+
 			rec.write(&canvasData, typeof(canvasData), 1);
+
 			rec.close();
 		}
+
+		db.close();
+		
+		db.open("PicoCanvasDB", false);
 
 		alert("Records: " + db.nrecs);
 
 		db.close();
 	}
-	else {
-		alert("DB open failed");
-	}
 }
-
 
 // Save current drawing in canvas array
 void SaveCurrentCanvas() {

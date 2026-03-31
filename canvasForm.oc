@@ -118,6 +118,12 @@ handler pushToolPencil.onselect() {
 }
 
 
+// Tools: Marker
+handler pushToolMarker.onselect() {
+	toolLabel.text = "Marker";
+}
+
+
 // Tools: Eyedropper
 handler pushToolEyedropper.onselect() {
 	toolLabel.text = "Eyedropper";
@@ -165,9 +171,4 @@ handler cfMenuOptClose.onselect() {
 
 handler cfMenuOptSave.onselect() {
 	SaveCurrentCanvas();
-}
-
-
-handler pushToolMarker.onselect() {
-	toolLabel.text = "Marker";
 }
