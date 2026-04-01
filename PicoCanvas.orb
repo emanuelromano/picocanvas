@@ -319,21 +319,6 @@
       graphic = true, bitmapid = 1046, sbitmapid = 0
       hresize = 0, vresize = 0
     }
-    label UILabel toolLabel {
-      id = 1049
-      x = 104, y = 11
-      fontid = 0
-      text = "Eyedropper"
-      hresize = 0, vresize = 0
-    }
-    field UIField field1050 {
-      id = 1050
-      x = 8, y = 11, w = 78, h = 12
-      fontid = 0, leftanchor = true, maxchars = 128
-      underline = true, singleline = true, dynamicsize = false, hasscroll = false
-      editable = true, autoshift = true, numeric = false
-      hresize = 0, vresize = 0
-    }
   }
 }
 

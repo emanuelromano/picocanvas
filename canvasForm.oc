@@ -18,7 +18,10 @@ handler canvasForm.onopen() {
 	*/
 	
 	// Pencil as the first tool usable
-	toolLabel.text = "Pencil";
+	draw.begin();
+	draw.text(clrText, 104, 11, "Pencil");
+	draw.end();
+	
 	pushToolPencil.checked = true;
 	toolSelected = 0;
 	
@@ -68,7 +71,8 @@ handler colorButton.onselect() {
 	
 	colorBridgeVar = pixelColorIndex;
 	
-	if (draw.selectIndex("Choose pixel color...", &pixelColorIndex)) {
+	if (draw.selectIndex("Choose color...", &pixelColorIndex)) {
+	
 		switchColors(pixelColorIndex, colorBridgeVar);
 		canvasGadget.SetColor(pixelColorIndex);
 		prevPixelColorIndex = colorBridgeVar;
@@ -102,7 +106,10 @@ handler previousColorButton.onselect() {
 	pushToolEyedropper.checked = false;
 	pushToolEraser.checked = false;
 	
-	toolLabel.text = "Pencil";
+	draw.begin();
+	draw.text(clrText, 104, 11, "Pencil");
+	draw.end();
+	
 	toolSelected = 0;
 	canvasGadget.SetTool(toolSelected);
 }
@@ -110,7 +117,10 @@ handler previousColorButton.onselect() {
 
 // Tools: Pencil
 handler pushToolPencil.onselect() {
-	toolLabel.text = "Pencil";
+	draw.begin();
+	draw.text(clrText, 104, 11, "Pencil");
+	draw.end();
+	
 	toolSelected = 0;
 	
 	canvasGadget.SetTool(toolSelected);
@@ -120,13 +130,18 @@ handler pushToolPencil.onselect() {
 
 // Tools: Marker
 handler pushToolMarker.onselect() {
-	toolLabel.text = "Marker";
+	draw.begin();
+	draw.text(clrText, 104, 11, "Marker");
+	draw.end();
 }
 
 
 // Tools: Eyedropper
 handler pushToolEyedropper.onselect() {
-	toolLabel.text = "Eyedropper";
+	draw.begin();
+	draw.text(clrText, 104, 11, "Eyedropper");
+	draw.end();
+	
 	toolSelected = 2;
 	
 	canvasGadget.SetTool(toolSelected);
@@ -135,7 +150,10 @@ handler pushToolEyedropper.onselect() {
 
 // Tools: Eraser
 handler pushToolEraser.onselect() {
-	toolLabel.text = "Eraser";
+	draw.begin();
+	draw.text(clrText, 104, 11, "Eraser");
+	draw.end();
+	
 	toolSelected = 3;
 	
 	canvasGadget.SetTool(toolSelected);
@@ -155,7 +173,10 @@ handler canvasGadget.onpenup() {
 		pushToolEyedropper.checked = false;
 		pushToolEraser.checked = false;
 		
-		toolLabel.text = "Pencil";
+		draw.begin();
+		draw.text(clrText, 104, 11, "Pencil");
+		draw.end();
+		
 		toolSelected = 0;
 		canvasGadget.SetTool(toolSelected);
 		canvasGadget.SetColor(pixelColorIndex);
