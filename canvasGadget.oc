@@ -1,6 +1,6 @@
 // Canvas gadget
 
-struct CanvasData {
+struct CanvasGadgetData {
 	int drawID;
 	string name;
 	int gridSize;
@@ -31,7 +31,7 @@ struct CanvasGadget {
 	void DrawPixel(int penX, int penY);
 	void DrawLineCells(int col0, int row0, int col1, int row1);
 	void GetCanvasData(int* outArray, int size);
-	void CopyTo(CanvasData* data);
+	void CopyTo(CanvasGadgetData* data);
 	
 	// Internal variables
 	Draw	draw;
@@ -382,7 +382,7 @@ void CanvasGadget.GetCanvasData(int* outArray, int size) {
 }
 
 
-void CanvasGadget.CopyTo(CanvasData* data) {
+void CanvasGadget.CopyTo(CanvasGadgetData* data) {
 	int i;
 
 	data->gridSize = gridSize;

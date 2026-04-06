@@ -14,12 +14,12 @@ int pixelColorIndex,
 
 Event e;
 
-/*struct CanvasData {
+struct CanvasData {
 	int drawID;
 	string name;
 	int gridSize;
 	int pixels[1024];
-};*/
+};
 
 CanvasData canvasData;
 

@@ -8,7 +8,7 @@ void initDatabase() {
 	if (!db.open("PicoCanvasDB", false)) {
 
 		// crear si no existe
-		if (db.create("PicoCanvasDB", "data", "P1C0", false)) {
+		if (db.create("PicoCanvasDB", "data", "Pico", false)) {
 			db.close();
 		} else {
 			alert("Unable to create database!");
