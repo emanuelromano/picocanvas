@@ -1,11 +1,12 @@
 // Canvas gadget
 
-struct CanvasGadgetData {
+struct CanvasLocalData {
 	int drawID;
 	string name;
 	int gridSize;
 	int pixels[1024];
 };
+
 
 struct CanvasGadget {
 	// A UIGadget must always be the first member of a gadget
@@ -31,11 +32,12 @@ struct CanvasGadget {
 	void DrawPixel(int penX, int penY);
 	void DrawLineCells(int col0, int row0, int col1, int row1);
 	void GetCanvasData(int* outArray, int size);
-	void CopyTo(CanvasGadgetData* data);
+	void CopyCanvasData(int* grid, int* pixels);
 	
 	// Internal variables
 	Draw	draw;
 	Event	e;
+	CanvasLocalData canvasLocalData;
 	bool	soundEnabled;
 	int		canvasSize;	
 	int		gridSize; // 16 - 32
@@ -382,12 +384,12 @@ void CanvasGadget.GetCanvasData(int* outArray, int size) {
 }
 
 
-void CanvasGadget.CopyTo(CanvasGadgetData* data) {
+void CanvasGadget.CopyCanvasData(int* grid, int* pixels) {
 	int i;
 
-	data->gridSize = gridSize;
+	*grid = gridSize;
 
 	for (i = 0; i < gridSize * gridSize; i++) {
-		data->pixels[i] = canvas[i];
+		pixels[i] = canvas[i];
 	}
 }

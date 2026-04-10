@@ -1,6 +1,5 @@
 // Main form
 
-
 handler mainForm.onopen() {
 	draw.attachForm(this);
 	

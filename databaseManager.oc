@@ -1,5 +1,14 @@
 // Database manager functions
 
+struct CanvasMainData {
+	int drawID;
+	string name;
+	int gridSize;
+	int pixels[1024];
+};
+
+CanvasMainData canvasMainData;
+
 
 void initDatabase() {
 	Database db;
@@ -30,7 +39,7 @@ void SaveCanvas() {
 		recIndex = db.nrecs;
 		if (db.getrec(recIndex, rec, true)) {
 
-			rec.write(&canvasData, typeof(canvasData), 1);
+			rec.write(&canvasMainData, typeof(canvasMainData), 1);
 
 			rec.close();
 		}
@@ -61,6 +70,7 @@ void SaveCurrentCanvas() {
 	}*/
 	
 	// Save in DB
-	canvasGadget.CopyTo(&canvasData);
+	canvasGadget.CopyCanvasData(&canvasMainData.gridSize, canvasMainData.pixels);
+	alert(canvasMainData.pixels[0]);
 	SaveCanvas();
 }

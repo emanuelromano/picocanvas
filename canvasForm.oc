@@ -1,6 +1,5 @@
 // Canvas form
 
-
 handler canvasForm.onopen() {
 	draw.attachForm(this);
 	
